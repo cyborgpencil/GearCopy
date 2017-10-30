@@ -3,6 +3,8 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,12 +50,27 @@ namespace GearCopy.ViewModels
             get { return _targetCommand; }
             set { SetProperty(ref _targetCommand, value); }
         }
+        private DelegateCommand _copyCommand;
+        public DelegateCommand SimpleCopyCommand
+        {
+            get { return _copyCommand; }
+            set { SetProperty(ref _copyCommand, value); }
+        }
+
+        private List<string> _safeFileNames;
+        [Description("Gets the File name and extention without path")]
+        public List<string> SafeFileNames
+        {
+            get { return _safeFileNames; }
+            set { SetProperty(ref _safeFileNames, value); }
+        }
 
         public SimpleCopyViewModel()
         {
             BrowseSourceCommand = new DelegateCommand(BrowseSource);
             SelectedFiles = "0";
             TargetCommand = new DelegateCommand(Target);
+            SimpleCopyCommand = new DelegateCommand(SimpleCopy);
         }
 
         private void BrowseSource()
@@ -66,6 +83,7 @@ namespace GearCopy.ViewModels
                 FileNames = new List<string>(dlg.FileNames.ToList());
                 SelectedFiles = FileNames.Count.ToString();
                 SourceTextBox = string.Concat(dlg.FileNames);
+                SafeFileNames = new List<string>(dlg.SafeFileNames.ToList());
             }
         }
 
@@ -76,8 +94,26 @@ namespace GearCopy.ViewModels
 
             if(flg.ShowDialog() == DialogResult.OK)
             {
-
+                TargetTextBox = flg.SelectedPath;
             }
+        }
+
+        private void SimpleCopy()
+        {
+            if(!string.IsNullOrWhiteSpace(SourceTextBox))
+            {
+                if(!string.IsNullOrWhiteSpace(TargetTextBox))
+                {
+                    for (int i = 0; i < FileNames.Count; i++)
+                    {
+                        FileInfo f = new FileInfo(FileNames[i]);
+                        f.CopyTo($"{TargetTextBox}\\{SafeFileNames[i]}", true);
+                    }
+                    
+                }
+            }
+
+            // clear UI
         }
     }
 }

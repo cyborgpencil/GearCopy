@@ -16,8 +16,13 @@
             <i:InvokeCommandAction Command="{Binding LoadWindowCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
-    <StackPanel>
-        <ContentControl prism:RegionManager.RegionName="SimpleCopyRegion"/>
-    </StackPanel>
+
+    <TabControl>
+        <TabItem Header="Local Copy">
+            <ContentControl prism:RegionManager.RegionName="SimpleCopyRegion"/>
+        </TabItem>
+        <TabItem Header="Network Copy">
+            <ContentControl/>
+        </TabItem>
+    </TabControl>
 </Window>

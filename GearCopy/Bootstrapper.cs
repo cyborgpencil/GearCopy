@@ -5,7 +5,7 @@ using Microsoft.Practices.Unity;
 
 namespace GearCopy
 {
-    class Bootstrapper :UnityBootstrapper
+    public class Bootstrapper :UnityBootstrapper
     {
         protected override DependencyObject CreateShell()
         {
@@ -21,7 +21,7 @@ namespace GearCopy
         {
             base.ConfigureContainer();
 
-            Container.RegisterTypeForNavigation<SimpleCopyView>();
+           Container.RegisterTypeForNavigation<SimpleCopyView>();
         }
 
     }

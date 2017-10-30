@@ -33,6 +33,6 @@
             <Button Content="Browse" Command="{Binding TargetCommand}"/>
         </StackPanel>
 
-        <Button Content="Copy" Grid.Column="0" Grid.Row="1"/>
+        <Button Content="Copy" Grid.Column="0" Grid.Row="1" Command="{Binding SimpleCopyCommand}"/>
     </Grid>
 </UserControl>
