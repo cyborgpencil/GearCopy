@@ -10,8 +10,9 @@
              Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="92*"/>
-            <RowDefinition Height="33*"/>
+            <RowDefinition Height="294*"/>
+            <RowDefinition Height="89*"/>
+            <RowDefinition Height="17*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -19,20 +20,26 @@
 
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="2" Grid.RowSpan="2" >
-            <TextBlock Text="Source"/>
-            <TextBox Text="{Binding SourceTextBox}"/>
-            <Button Content="Browse" Command="{Binding BrowseSourceCommand}"/>
-            <TextBlock Text="Selected Files:"/>
-            <TextBlock Text="{Binding SelectedFiles}"/>
+        <StackPanel Grid.Column="0" Margin="2" Grid.RowSpan="3">
+            <TextBlock Text="Source" Margin="2"/>
+            <TextBox Text="{Binding SourceTextBox}" Margin="2"/>
+            <Button Content="Browse" Command="{Binding BrowseSourceCommand}" Margin="2"/>
+            <TextBlock Text="Selected Files:"  Margin="2"/>
+            <TextBlock Text="{Binding SelectedFiles}" Margin="2"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Margin="2" Grid.RowSpan="2">
+        <StackPanel Grid.Column="1" Margin="2" Grid.RowSpan="3">
             <TextBlock Text="Target"/>
-            <TextBox Text="{Binding TargetTextBox}"/>
-            <Button Content="Browse" Command="{Binding TargetCommand}"/>
+            <TextBox Text="{Binding TargetTextBox}"  Margin="2"/>
+            <Button Content="Browse" Command="{Binding TargetCommand}"  Margin="2"/>
+            <StackPanel Grid.Column="1" Grid.Row="2"  Margin="2">
+                <CheckBox Content="From Custom"  Margin="2"/>
+                <ComboBox Width="200" Height="20" Margin="2" />
+                <ListView Height="50" Margin="5"/>
+            </StackPanel>
         </StackPanel>
 
-        <Button Content="Copy" Grid.Column="0" Grid.Row="1" Command="{Binding SimpleCopyCommand}"/>
+        <Button Content="Copy" Grid.Column="0" Grid.Row="1" Command="{Binding SimpleCopyCommand}" Margin="4" />
+        <ProgressBar Minimum="{Binding MinProgressBind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Maximum="{Binding MaxProgressBinding}" Value="{Binding ProgressbarBind}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="5"/>
     </Grid>
 </UserControl>

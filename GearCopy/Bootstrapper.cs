@@ -21,7 +21,7 @@ namespace GearCopy
         {
             base.ConfigureContainer();
 
-           Container.RegisterTypeForNavigation<SimpleCopyView>();
+            Container.RegisterTypeForNavigation<SimpleCopyView>();
         }
 
     }

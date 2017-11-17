@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -64,6 +65,24 @@ namespace GearCopy.ViewModels
             get { return _safeFileNames; }
             set { SetProperty(ref _safeFileNames, value); }
         }
+        private float _progressbarBind;
+        public float ProgressbarBind
+        {
+            get { return _progressbarBind; }
+            set { SetProperty(ref _progressbarBind, value); }
+        }
+        private float _MaxProgressBinding;
+        public float MaxProgressBinding
+        {
+            get { return _MaxProgressBinding; }
+            set { SetProperty(ref _MaxProgressBinding, value); }
+        }
+        private float _minProgressBind;
+        public float MinProgressBind
+        {
+            get { return _minProgressBind; }
+            set { SetProperty(ref _minProgressBind, value); }
+        }
 
         public SimpleCopyViewModel()
         {
@@ -71,12 +90,16 @@ namespace GearCopy.ViewModels
             SelectedFiles = "0";
             TargetCommand = new DelegateCommand(Target);
             SimpleCopyCommand = new DelegateCommand(SimpleCopy);
+            MinProgressBind = 0;
+            MaxProgressBinding = 100;
         }
 
         private void BrowseSource()
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Multiselect = true;
+            OpenFileDialog dlg = new OpenFileDialog
+            {
+                Multiselect = true
+            };
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -89,10 +112,12 @@ namespace GearCopy.ViewModels
 
         private void Target()
         {
-            FolderBrowserDialog flg = new FolderBrowserDialog();
-            flg.Description = "Test Description";
+            FolderBrowserDialog flg = new FolderBrowserDialog
+            {
+                Description = "Test Description"
+            };
 
-            if(flg.ShowDialog() == DialogResult.OK)
+            if (flg.ShowDialog() == DialogResult.OK)
             {
                 TargetTextBox = flg.SelectedPath;
             }
@@ -100,19 +125,26 @@ namespace GearCopy.ViewModels
 
         private void SimpleCopy()
         {
-            if(!string.IsNullOrWhiteSpace(SourceTextBox))
+            
+            if (!string.IsNullOrWhiteSpace(SourceTextBox))
             {
-                if(!string.IsNullOrWhiteSpace(TargetTextBox))
+                if (!string.IsNullOrWhiteSpace(TargetTextBox))
                 {
+                    FileInfo fi = new FileInfo(TargetTextBox);
+
+                    float valuesSteps = (100.0f /(FileNames.Count));
                     for (int i = 0; i < FileNames.Count; i++)
                     {
-                        FileInfo f = new FileInfo(FileNames[i]);
-                        f.CopyTo($"{TargetTextBox}\\{SafeFileNames[i]}", true);
+                        ProgressbarBind += valuesSteps;
+                        string file = $"{TargetTextBox}\\{SafeFileNames[i]}";
+                        File.Copy(FileNames[i], file, true);
+                        
                     }
-                    
                 }
             }
-
+            Application.DoEvents();
+            Thread.Sleep(1000);
+            ProgressbarBind = 0;
             // clear UI
         }
     }

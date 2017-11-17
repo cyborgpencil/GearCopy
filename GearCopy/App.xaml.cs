@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GearCopy.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,6 +16,9 @@ namespace GearCopy
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Filemanager
+            FileManager fm = new FileManager();
+
             base.OnStartup(e);
 
             var bootstapper = new Bootstrapper();
